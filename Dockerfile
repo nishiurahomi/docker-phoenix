@@ -1,25 +1,33 @@
 FROM erlang:20-alpine
-MAINTAINER shufo
+MAINTAINER homi
 
 
-ENV REFRESHED_AT 2017-10-02
-ENV ELIXIR_VERSION 1.5.2
+ENV REFRESHED_AT 2017-10-25
+ENV ELIXIR_VERSION 1.6.0-dev
 ENV HOME /root
 
 # Install Erlang/Elixir
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories && \
-    echo 'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories && \
-    apk -U upgrade && \
-    apk --update --no-cache add ncurses-libs git make g++ wget python ca-certificates openssl && \
+RUN apk -U upgrade && \
+    apk --update --no-cache add ncurses-libs git make g++ wget python ca-certificates openssl nodejs nodejs-npm mysql-client imagemagick curl bash \
+                     inotify-tools openssh && \
     update-ca-certificates --fresh && \
-    wget https://github.com/elixir-lang/elixir/releases/download/v${ELIXIR_VERSION}/Precompiled.zip && \
-    mkdir -p /opt/elixir-${ELIXIR_VERSION}/ && \
-    unzip Precompiled.zip -d /opt/elixir-${ELIXIR_VERSION}/ && \
-    rm Precompiled.zip && \
+    curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s && \
+    source $HOME/.kiex/scripts/kiex && \
+    kiex install master && \
+    kiex use master && \
+    kiex default master && \
+    npm install -g yarn brunch babel-brunch sass-brunch javascript-brunch css-brunch clean-css-brunch uglify-js-brunch && \
     rm -rf /var/cache/apk/*
 
+# Add erlang-history
+RUN git clone -q https://github.com/ferd/erlang-history.git && \
+    cd erlang-history && \
+    make install && \
+    cd - && \
+    rm -fR erlang-history
+
 # Add local node module binaries to PATH
-ENV PATH $PATH:node_modules/.bin:/opt/elixir-${ELIXIR_VERSION}/bin
+ENV PATH $PATH:node_modules/.bin:/root/.kiex/builds/elixir-git/bin
 
 # Install Hex+Rebar
 RUN mix local.hex --force && \
