@@ -2,10 +2,8 @@ FROM elixir:1.4.5-slim
 MAINTAINER homi
 
 RUN set -x && \
-  apt-get update -q && \
-  apt-get upgrade -y && \
+  apt-get update && \
   apt-get install -y --no-install-recommends \
-  apt-utils \
   nodejs \
   npm \
   mysql-client \
@@ -22,12 +20,9 @@ RUN set -x && \
   apt-get purge -y nodejs npm
 
 #install mono
-RUN wget http://download.mono-project.com/repo/xamarin.gpg && \
-    apt-key add xamarin.gpg && \
-    rm xamarin.gpg && \
-    echo "deb http://download.mono-project.com/repo/debian wheezy main" > /etc/apt/sources.list.d/mono-xamarin.list && \
-    apt-get update -q && \
-    apt-get -y -q install mono-complete
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+    echo "deb http://download.mono-project.com/repo/ubuntu trusty main" | tee /etc/apt/sources.list.d/mono-official.list && \
+    apt-get update
 
 # Add erlang-history
 RUN git clone -q https://github.com/ferd/erlang-history.git && \
