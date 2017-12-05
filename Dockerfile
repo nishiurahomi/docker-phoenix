@@ -2,8 +2,10 @@ FROM elixir:1.4.5-slim
 MAINTAINER homi
 
 RUN set -x && \
-  apt-get update && \
+  apt-get update -q && \
+  apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
+  apt-utils \
   nodejs \
   npm \
   mysql-client \
@@ -20,8 +22,7 @@ RUN set -x && \
   apt-get purge -y nodejs npm
 
 #install mono
-RUN apt-get -qq -y install wget unzip && \
-    wget http://download.mono-project.com/repo/xamarin.gpg && \
+RUN wget http://download.mono-project.com/repo/xamarin.gpg && \
     apt-key add xamarin.gpg && \
     rm xamarin.gpg && \
     echo "deb http://download.mono-project.com/repo/debian wheezy main" > /etc/apt/sources.list.d/mono-xamarin.list && \
