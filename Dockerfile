@@ -32,8 +32,6 @@ RUN git clone -q https://github.com/ferd/erlang-history.git && \
     rm -fR erlang-history
 
 
-USER elixir
-
 EXPOSE 4000
 
 CMD ["sh", "-c", "mix deps.get && mix phoenix.server"]
