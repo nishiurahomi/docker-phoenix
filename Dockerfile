@@ -12,7 +12,6 @@ RUN set -x && \
   make \
   imagemagick \
   curl && \
-  wget && \
   rm -rf /var/lib/apt/lists/* && \
   npm cache clean && \
   npm install n -g && \
@@ -21,7 +20,8 @@ RUN set -x && \
   apt-get purge -y nodejs npm
 
 #install mono
-RUN wget http://download.mono-project.com/repo/xamarin.gpg && \
+RUN apt install wget && \
+    wget http://download.mono-project.com/repo/xamarin.gpg && \
     apt-key add xamarin.gpg && \
     rm xamarin.gpg && \
     echo "deb http://download.mono-project.com/repo/debian wheezy main" > /etc/apt/sources.list.d/mono-xamarin.list && \
