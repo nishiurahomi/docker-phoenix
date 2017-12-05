@@ -20,7 +20,7 @@ RUN set -x && \
   apt-get purge -y nodejs npm
 
 #install mono
-RUN apt install wget && \
+RUN apt-get -qq -y install wget unzip && \
     wget http://download.mono-project.com/repo/xamarin.gpg && \
     apt-key add xamarin.gpg && \
     rm xamarin.gpg && \
