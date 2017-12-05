@@ -1,23 +1,22 @@
-FROM erlang:20-alpine
+FROM elixir:1.4.5-slim
 MAINTAINER homi
 
-
-ENV REFRESHED_AT 2017-10-25
-ENV ELIXIR_VERSION 1.4.2
-ENV HOME /root
-
-# Install Erlang/Elixir
-RUN apk -U upgrade && \
-    apk --update --no-cache add ncurses-libs git make g++ wget python ca-certificates openssl nodejs nodejs-npm mysql-client imagemagick curl bash \
-                     inotify-tools openssh && \
-    update-ca-certificates --fresh && \
-    curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s && \
-    source $HOME/.kiex/scripts/kiex && \
-    kiex install master && \
-    kiex use master && \
-    kiex default master && \
-    npm install -g yarn brunch babel-brunch sass-brunch javascript-brunch css-brunch clean-css-brunch uglify-js-brunch && \
-    rm -rf /var/cache/apk/*
+RUN set -x && \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  nodejs \
+  npm \
+  mysql-client \
+  inotify-tools \
+  git \
+  imagemagick \
+  curl && \
+  rm -rf /var/lib/apt/lists/* && \
+  npm cache clean && \
+  npm install n -g && \
+  n stable && \
+  ln -sf /usr/local/bin/node /usr/bin/node && \
+  apt-get purge -y nodejs npm
 
 # Add erlang-history
 RUN git clone -q https://github.com/ferd/erlang-history.git && \
@@ -26,13 +25,8 @@ RUN git clone -q https://github.com/ferd/erlang-history.git && \
     cd - && \
     rm -fR erlang-history
 
-# Add local node module binaries to PATH
-ENV PATH $PATH:node_modules/.bin:/root/.kiex/builds/elixir-git/bin
 
-# Install Hex+Rebar
-RUN mix local.hex --force && \
-    mix local.rebar --force && \
-    mix hex.info
+USER elixir
 
 EXPOSE 4000
 
