@@ -32,13 +32,12 @@ RUN git clone -q https://github.com/ferd/erlang-history.git && \
     rm -fR erlang-history
 
 # Add local node module binaries to PATH
-ENV PATH $PATH:node_modules/.bin:/opt/elixir-${ELIXIR_VERSION}/bin
+ENV PATH $PATH:node_modules/.bin:/opt/elixir-1.4.5/bin
 
 # Install Hex+Rebar
 RUN mix local.hex --force && \
     mix local.rebar --force && \
     mix hex.info
-
 
 EXPOSE 4000
 
