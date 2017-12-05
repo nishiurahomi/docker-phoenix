@@ -9,6 +9,7 @@ RUN set -x && \
   mysql-client \
   inotify-tools \
   git \
+  make \
   imagemagick \
   curl && \
   rm -rf /var/lib/apt/lists/* && \
@@ -17,6 +18,15 @@ RUN set -x && \
   n stable && \
   ln -sf /usr/local/bin/node /usr/bin/node && \
   apt-get purge -y nodejs npm
+
+#install mono
+RUN apt-get -y -q install wget && \
+    wget http://download.mono-project.com/repo/xamarin.gpg && \
+    apt-key add xamarin.gpg && \
+    rm xamarin.gpg && \
+    echo "deb http://download.mono-project.com/repo/debian wheezy main" > /etc/apt/sources.list.d/mono-xamarin.list && \
+    apt-get update -q && \
+    apt-get -y -q install mono-complete
 
 # Add erlang-history
 RUN git clone -q https://github.com/ferd/erlang-history.git && \
