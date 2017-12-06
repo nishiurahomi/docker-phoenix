@@ -11,6 +11,10 @@ RUN set -x && \
   git \
   make \
   imagemagick \
+  tar \
+  ssh \
+  gzip \
+  ca-certificates \
   curl && \
   rm -rf /var/lib/apt/lists/* && \
   npm cache clean && \
