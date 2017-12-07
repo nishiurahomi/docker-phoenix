@@ -1,4 +1,4 @@
-FROM elixir:1.4.5-slim
+FROM elixir:1.4.2-slim
 MAINTAINER homi
 
 RUN set -x && \
