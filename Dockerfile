@@ -4,8 +4,8 @@ MAINTAINER homi
 RUN set -x && \
   apt-get update && \
   apt-get install -y --no-install-recommends \
-  nodejs \
-  npm \
+  nodejs=7.6.0 \
+  npm=4.1.2 \
   mysql-client \
   inotify-tools \
   git \
