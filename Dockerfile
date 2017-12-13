@@ -4,8 +4,8 @@ MAINTAINER homi
 RUN set -x && \
   apt-get update && \
   apt-get install -y --no-install-recommends \
-  nodejs=7.6.0 \
-  npm=4.1.2 \
+  nodejs \
+  npm \
   mysql-client \
   inotify-tools \
   git \
@@ -23,6 +23,12 @@ RUN set -x && \
   n stable && \
   ln -sf /usr/local/bin/node /usr/bin/node && \
   apt-get purge -y nodejs npm
+
+#install n
+RUN npm cache verify && npm install -g n
+
+#install node
+RUN n 7.6.0
 
 #install mono
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
