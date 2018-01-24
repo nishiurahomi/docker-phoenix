@@ -46,4 +46,4 @@ RUN mix local.hex --force && \
 
 EXPOSE 4000
 
-CMD ["sh", "-c", "mix deps.get && mix phoenix.server"]
+CMD ["sh", "-c", "mix deps.get && mix ecto.migrate　&& mix phoenix.server"]
