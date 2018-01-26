@@ -29,6 +29,9 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E03280
     echo "deb http://download.mono-project.com/repo/ubuntu trusty main" | tee /etc/apt/sources.list.d/mono-official.list && \
     apt-get update
 
+#install awscli
+RUN apt-get update && apt-get install -y python2.7-dev python-setuptools && easy_install pip && pip install awscli
+
 # Add erlang-history
 RUN git clone -q https://github.com/ferd/erlang-history.git && \
     cd erlang-history && \
